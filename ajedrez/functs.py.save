@@ -1,0 +1,32 @@
+def convert_btw_lines(x, y):
+        x = (x*2)+1
+        y = (y*2)+1
+        xy = [x, y]
+        return xy
+
+#types: type1 = movimiento en x, type2 = movmiento en y,
+#type3 = movimiento en y y en x
+def determinate_type(coord1, coord2):
+	if (coord1[0] != coord2[0] & coord1[1] != coord2[1]):
+		type = 3
+	elif (coord1[0] != coord2[0] & coord1[1] == coord2[1]):
+		type = 1
+	elif (coord1[0] == coord2[0] & coord1[1] != coord2[1]):
+		type = 2
+	return type
+
+def generate_path(crd1, crd2):
+	t = determinate_type(crd1, crd2)
+	if (t == 1):
+		move1 = crd1                   #va a buscar la pieza
+		move2 = [crd1[0], crd1[1]+1]   #pone la pieza entre lineas (sumando 1 en y)
+		move3 = [crd2[0], crd2[1]+1]   #mueve la pieza entre lineas hasta la altura en x a donde se va a mover
+		move4 = crd2
+                   #se mete en el cuadrado correspondiente
+	elif (t == 2):
+		move1 = crd1
+		move2 = [crd1[0]+1, crd1[1]]
+		move3 = [crd2[0]+1, crd2[1]]
+		move4 = crd2
+	else:
+		move1
