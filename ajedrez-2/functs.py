@@ -22,6 +22,14 @@ def determinate_type(coord1, coord2):
 	return ty
 
 
+def wait_for_answer():
+	ser = serial.Serial('/dev/ttyACM0', baudrate=115200) #Tried with and without the last 3 parameters, and also at 1Mbps, same happens.
+	ser.flushInput()
+	ser.flushOutput()
+	data_raw = ser.readline()
+  	print(data_raw)
+
+
 def make_path(crd1, crd2):
 	t = determinate_type(crd1, crd2)
 	crd1 = convert_btw_lines(crd1[0], crd1[1])
@@ -68,9 +76,9 @@ def micro_g_code(line, tam):
 		gLine = g+"01"+esp+x+str(line[0])+esp+y+str(line[1])
 	else:
 		if (line == 1):
-			gLine = "M666"
+			gLine = "M3"
 		else:
-			gLine = "M999"
+			gLine = "M4"
 	return gLine
 
 
@@ -101,3 +109,6 @@ def send(val):
 		arduino.write(bytes(str(z), encoding='ascii'))
 		print(z)
 		time.sleep(.5)
+		wait_for_answer()
+		time.sleep(.5)
+
