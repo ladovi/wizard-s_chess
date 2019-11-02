@@ -6,3 +6,7 @@ ser.flushOutput()
 while (True):
   data_raw = ser.readline()
   print(data_raw)
+  if bytes("Grbl 1.1h", encoding='ascii') in data_raw:
+  	writ = input("INPUT: ")
+  	ser.write(bytes(writ, encoding='utf_8'))
+  	#ser.write(writ)

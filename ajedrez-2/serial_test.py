@@ -12,8 +12,9 @@ import serial.tools.list_ports
 #      print(port)
 
 
-arduino = serial.Serial('/dev/ttyACM0', baudrate=115200)
+arduino = serial.Serial('/dev/ttyACM0', baudrate=115200, timeout=1.0)
 
 while True:
+    arduino.write(bytes("\r\n\r\n", encoding='ascii'))
     pito = input("INPUT: ")
     arduino.write(bytes(pito, encoding='ascii'))

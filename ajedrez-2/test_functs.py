@@ -11,21 +11,21 @@ inCoord2 = input("enter coordenate 2 between comas")
 tCoord2 = [int(inCoord2[0]), int(inCoord2[2])]
 
 tipo = f.determinate_type(tCoord1, tCoord2)
-print("move type:",tipo)
+#print("move type:",tipo)
 
 
 
 moves = f.make_path(tCoord1, tCoord2)
-print(moves)
+#print(moves)
 
 magMoves = f.add_magnet(moves)
-print(magMoves)
+#print(magMoves)
 
 gline = f.micro_g_code(magMoves[0], 2)
 gline2 = f.micro_g_code(magMoves[1], 1)
 
-print(gline)
-print(gline2)
+#print(gline)
+#print(gline2)
 
 glines = f.g_code_converter(moves)
 print(glines)

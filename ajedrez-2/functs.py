@@ -22,12 +22,12 @@ def determinate_type(coord1, coord2):
 	return ty
 
 
-def wait_for_answer():
-	ser = serial.Serial('/dev/ttyACM0', baudrate=115200) #Tried with and without the last 3 parameters, and also at 1Mbps, same happens.
-	ser.flushInput()
-	ser.flushOutput()
-	data_raw = ser.readline()
-  	print(data_raw)
+#def wait_for_answer():
+#	ser = serial.Serial('/dev/ttyACM0', baudrate=115200) #Tried with and without the last 3 parameters, and also at 1Mbps, same happens.
+#	ser.flushInput()
+#	ser.flushOutput()
+#	data_raw = ser.readline()
+ # 	print(data_raw)
 
 
 def make_path(crd1, crd2):
@@ -104,11 +104,14 @@ def g_code_converter(m):
 	return allLines
 
 def send(val):
-	arduino = serial.Serial('/dev/ttyACM0', baudrate=9600)
+	arduino = serial.Serial('/dev/ttyACM0', baudrate=115200)
+	
 	for z in val:
+		arduino.write(bytes("\r\n\r\n", encoding='ascii'))
 		arduino.write(bytes(str(z), encoding='ascii'))
+		arduino.write(bytes("\r\n\r\n", encoding='ascii'))
 		print(z)
 		time.sleep(.5)
-		wait_for_answer()
+		#wait_for_answer()
 		time.sleep(.5)
 
