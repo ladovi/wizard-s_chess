@@ -73,7 +73,7 @@ def micro_g_code(line, tam):
 	esp = " "
 
 	if (tam > 1):
-		gLine = g+"01"+esp+x+str(line[0])+esp+y+str(line[1])
+		gLine = g+"01"+esp+x+str(line[0])+y+str(line[1])
 	else:
 		if (line == 1):
 			gLine = "M3"
