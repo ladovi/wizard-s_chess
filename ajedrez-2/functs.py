@@ -115,3 +115,17 @@ def send(val):
 		#wait_for_answer()
 		time.sleep(.5)
 
+def funcion_maxima(cor1, cor2):
+	tipo = determinate_type(cor1, cor2)
+	#print("move type:",tipo)
+	moves = make_path(cor1, cor2)
+	#print(moves)
+	magMoves = add_magnet(moves)
+	#print(magMoves)
+	gline = micro_g_code(magMoves[0], 2)
+	gline2 = micro_g_code(magMoves[1], 1)
+	#print(gline)
+	#print(gline2)
+	glines = g_code_converter(moves)
+	#print(glines)
+	send(glines)
