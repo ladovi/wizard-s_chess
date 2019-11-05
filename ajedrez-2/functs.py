@@ -7,7 +7,9 @@ def convert_btw_lines(x, y):
         x = (x*2)+1
         y = (y*2)+1
         xy = [x, y]
+        print(xy)
         return xy
+
 #types: type1 = movimiento en x, type2 = movmiento en y,
 #type3 = movimiento en y y en x
 
@@ -125,9 +127,9 @@ def micro_acorte(line, place):
 	return linea
 
 
-def home():
-	arduino = serial.Serial('/dev/ttyACM0', baudrate=115200)
-	arduino.write(bytes("G91 X0Y0", encoding='ascii'))
+#def home():
+#	arduino = serial.Serial('/dev/ttyACM0', baudrate=115200)
+#	arduino.write(bytes("G91 X0Y0", encoding='ascii'))
 
 
 def acortacion(lineas, tipo):
@@ -225,11 +227,20 @@ def funcion_maxima(cor1, cor2):
 	lineasCortadas = acortacion(glines, tipo)
 	print(lineasCortadas)
 
-	
+	return lineasCortadas
 	#send(lineasCortadas)
 
 	#home()
 
 	time.sleep(5)
+
+def home(tira):
+	tam = len(tira)
+	cant = tam - 3
+	i = 3
+	tiraPiola = ''
+	while (i < cant+1):
+		tiraPiola = tiraPiola+tira[i]
+	print(tiraCoor)
 
 
