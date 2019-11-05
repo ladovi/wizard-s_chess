@@ -1,11 +1,9 @@
 import functs as f
 
-coor = input("mete coordenada de prueba...")
-lugar = input("met lugar (x/y)")
+coor1 = input("mete coordenada 1... ")
+coor2 = input("mete coordenada 2... ")
 #esMayor = f.mayor(coor)
  
 #lugar = input("mete lugar (x/y)")
 
-acortada = f.micro_acorte(coor, lugar)
-
-print(acortada)
+test = f.funcion_maxima(coor1, coor2)

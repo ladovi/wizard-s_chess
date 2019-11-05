@@ -124,6 +124,12 @@ def micro_acorte(line, place):
 		#linea = line[0]+line[1]+line[2]+line[3]+line[4]+line[5]
 	return linea
 
+
+def home():
+	arduino = serial.Serial('/dev/ttyACM0', baudrate=115200)
+	arduino.write(bytes("G91 X0Y0", encoding='ascii'))
+
+
 def acortacion(lineas, tipo):
 	lineasFinal = []
 
@@ -191,6 +197,9 @@ def g_code_converter(m):
 def send(val):
 	arduino = serial.Serial('/dev/ttyACM0', baudrate=115200)
 	
+	arduino.write(bytes("\r\n\r\n", encoding='ascii'))
+	arduino.write(bytes("M4", encoding='ascii'))
+
 	for z in val:
 		arduino.write(bytes("\r\n\r\n", encoding='ascii'))
 		arduino.write(bytes(str(z), encoding='ascii'))
@@ -218,5 +227,9 @@ def funcion_maxima(cor1, cor2):
 
 	
 	#send(lineasCortadas)
+
+	#home()
+
+	time.sleep(5)
 
 

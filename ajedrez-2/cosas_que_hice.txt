@@ -1,0 +1,7 @@
+1. tomar los valores de las coordenadas(en donde esta la pieza y a donde se va a mover)
+2. cambiar los valores para un tablero donde cuente entrelieneas
+3. creacion del path que debe realizar (tipos de movimientos, cantidad de coordenadas, etc)
+4. agregar los estados del rele
+5. conversion a g-code (que es, formato, para que se usa)
+6. enviado del g-code a arduino (comunicacion serial)
+7. confguracion del grbl (pasos por mm, velocidad, etc)

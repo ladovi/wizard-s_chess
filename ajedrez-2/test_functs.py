@@ -14,18 +14,18 @@ tCoord2 = [int(inCoord2[0]), int(inCoord2[2])]
 
 tipo = f.determinate_type(tCoord1, tCoord2)
 
-#f.funcion_maxima(tCoord1, tCoord2)
+f.funcion_maxima(tCoord1, tCoord2)
 
 
 print("move type:",tipo)
 
 
 
-moves = f.make_path(tCoord1, tCoord2)
-print(moves)
+#moves = f.make_path(tCoord1, tCoord2)
+#print(moves)
 
-magMoves = f.add_magnet(moves)
-print(magMoves)
+#magMoves = f.add_magnet(moves)
+#print(magMoves)
 
 #gline = f.micro_g_code(magMoves[0], len(magMoves))
 #gline2 = f.micro_g_code(magMoves[1], len(magMoves))
@@ -36,8 +36,8 @@ print(magMoves)
 #print(gline)
 #print(gline2)
 
-glines = f.g_code_converter(moves)
-print(glines)
+#glines = f.g_code_converter(moves)
+#print(glines)
 
 
 
