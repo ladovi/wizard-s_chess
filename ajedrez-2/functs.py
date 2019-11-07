@@ -56,7 +56,7 @@ def make_path(crd1, crd2):
 		move1 = crd1                      #va a buscar la pieza
 		#se prende iman
 		move2 = [crd1[0], crd1[1]-1]      #la pone entre lineas
-		move3 = [crd2[0]+1, crd1[1]-1]    #se mueve a la altura del destino en el eje x sumandole 1 para que no llevarse por delante las piezas cuando baje
+		move3 = [crd2[0]-1, crd1[1]-1]    #se mueve a la altura del destino en el eje x sumandole 1 para que no llevarse por delante las piezas cuando baje
 		move4 = [crd2[0]+1, crd2[1]]      #baja estando entre lineas a la altura de destino en y
 		move5 = crd2                      #se centra en el cuadrado
 		#se apaga iman
@@ -94,42 +94,61 @@ def micro_g_code(line, tam):
 			gLine = "M4"
 	return gLine
 
-def micro_acorte(line, place):
-	linea = line[0]+line[1]+line[2]+line[3]
-
-	if (place == 'x'):
-		#linea = line[0]+line[1]+line[2]+line[3]+line[7]+line[8]
-		#print(len(linea))
-		
-		if (line[6] == 'Y'):
-			if (len(line) > 8):
-				linea = linea+line[6]+line[7]+line[8]
-			else:
-				linea = linea+line[6]+line[7]
-
-			#linea = linea+line[7]+line[8]+line[9]
+def find_index_letra(line, letra):
+	index = 0
+	for i in line:
+		if (i == letra):
+			esp = index
+			break
 		else:
-			if (len(line) > 9):
-				linea = linea+line[7]+line[8]+line[9]
-			#linea = linea+line[7]+line[8]
-			else:
-				linea = linea+line[7]+line[8]
+			index += 1
+	return index
 
-
+def find_value(line, letra):
+	
+	indX = find_index_letra(line, 'X')
+	indY = find_index_letra(line, 'Y')
+	val = ''
+	if (letra == 'X'):
+		i = indX
+		while (i < indY):
+			val = val+line[i]
+			i += 1
+			
 	else:
-		if (line[6] != 'Y'):
-			linea = linea+line[4]+line[5]+line[6]
-		else:
-			linea = linea+line[4]+line[5]
+		i = indY
+		while (i < len(line)):
+			val = val+line[i]
+			i += 1
+	return val
 
 
-		#linea = line[0]+line[1]+line[2]+line[3]+line[4]+line[5]
-	return linea
+def acort(lines, typ):
+	allLines = []
 
+	if (typ == 1):
+		allLines.append(lines[0])
+		allLines.append('G91 '+find_value(lines[1], 'Y'))
+		allLines.append('G91 '+find_value(lines[2], 'X'))
+		allLines.append('G91 '+find_value(lines[3], 'Y'))
+	elif (typ == 2):
+		allLines.append(lines[0])
+		allLines.append('G91 '+find_value(lines[1], 'X'))
+		allLines.append('G91 '+find_value(lines[2], 'Y'))
+		allLines.append('G91 '+find_value(lines[3], 'X'))
+	else:
+		allLines.append(lines[0])
+		allLines.append('G91 '+find_value(lines[1], 'Y'))
+		allLines.append('G91 '+find_value(lines[2], 'X'))
+		allLines.append('G91 '+find_value(lines[3], 'Y'))
+		allLines.append('G91 '+find_value(lines[4], 'X'))
+	return allLines
 
-#def home():
-#	arduino = serial.Serial('/dev/ttyACM0', baudrate=115200)
-#	arduino.write(bytes("G91 X0Y0", encoding='ascii'))
+def add_gMagnet(tira_lineas):
+	tira_lineas.insert(1, 'M4')
+	tira_lineas.append('M3')
+	return tira_lineas
+
 
 
 def acortacion(lineas, tipo):
@@ -216,23 +235,27 @@ def funcion_maxima(cor1, cor2):
 	#print("move type:",tipo)
 	moves = make_path(cor1, cor2)
 	#print(moves)
-	magMoves = add_magnet(moves)
+	#magMoves = add_magnet(moves)
 	#print(magMoves)
-	gline = micro_g_code(magMoves[0], 2)
-	gline2 = micro_g_code(magMoves[1], 1)
+	#gline = micro_g_code(moves, 2)
+	#gline2 = micro_g_code(magMoves[1], 1)
 	#print(gline)
 	#print(gline2)
 	glines = g_code_converter(moves)
 
-	lineasCortadas = acortacion(glines, tipo)
-	print(lineasCortadas)
+	#lineasCortadas = acortacion(glines, tipo)
+	#print(lineasCortadas)
 
-	return lineasCortadas
+	#return lineasCortadas
 	#send(lineasCortadas)
 
 	#home()
+	tod_lineas = acort(glines, tipo)
+	#print(tod_lineas)
+	#print(find_value(caca, 'X'))
+	print(add_gMagnet(tod_lineas))
 
-	time.sleep(5)
+	#time.sleep(5)
 
 def home(tira):
 	tam = len(tira)
