@@ -1,2 +1,2 @@
-#wizard-s_chess
+#wizard-s_chess\n
 #updateado casi completo ;)
