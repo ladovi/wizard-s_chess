@@ -211,7 +211,7 @@ def g_code_converter(m):
 	return allLines
 
 def send(val):
-	
+	'''
 	ports = list(serial.tools.list_ports.comports())
 	for p in ports:
     	#print p
@@ -220,8 +220,10 @@ def send(val):
 	
 	tempN = 3
 	tempF = 5
-	#arduino = serial.Serial('COM3', baudrate=115200)
+	'''
+	arduino = serial.Serial('dev/ttyACM0', baudrate=115200)
 	
+
 	arduino.write(bytes("\r\n\r\n", encoding='ascii'))
 	arduino.write(bytes("M4", encoding='ascii'))
 
@@ -275,6 +277,7 @@ def funcion_maxima(cor1, cor2):
 	h = home(glines)
 	print(h)
 	tod_lineas.append(h)
+	send(tod_lineas)
 	return tod_lineas
 	#print(tod_lineas)
 	#print(find_value(caca, 'X'))
