@@ -14,10 +14,11 @@ tCoord2 = [int(inCoord2[0]), int(inCoord2[2])]
 
 tipo = f.determinate_type(tCoord1, tCoord2)
 
-f.funcion_maxima(tCoord1, tCoord2)
+todLines = f.funcion_maxima(tCoord1, tCoord2)
 
 
 print("move type:",tipo)
+print(todLines)
 
 
 

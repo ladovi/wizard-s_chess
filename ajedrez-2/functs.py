@@ -151,46 +151,41 @@ def add_gMagnet(tira_lineas):
 
 
 
-def acortacion(lineas, tipo):
-	lineasFinal = []
-
-	if (tipo == 1):
-		linea1 = micro_acorte(lineas[2], 'x')
-		linea2 = micro_acorte(lineas[3], 'y')
-		linea3 = micro_acorte(lineas[4], 'x')
-		
-		lineasFinal.append(lineas[0])
-		lineasFinal.append(lineas[1])
-		lineasFinal.append(linea1)
-		lineasFinal.append(linea2)
-		lineasFinal.append(linea3)
-		lineasFinal.append(lineas[5])
-	elif (tipo == 2):
-		linea1 = micro_acorte(lineas[2], 'y')
-		linea2 = micro_acorte(lineas[3], 'x')
-		linea3 = micro_acorte(lineas[4], 'y')
-
-		lineasFinal.append(lineas[0])
-		lineasFinal.append(lineas[1])
-		lineasFinal.append(linea1)
-		lineasFinal.append(linea2)
-		lineasFinal.append(linea3)
-		lineasFinal.append(lineas[5])
-	else:
-		linea1 = micro_acorte(lineas[2], 'x')
-		linea2 = micro_acorte(lineas[3], 'y')
-		linea3 = micro_acorte(lineas[4], 'x')
-		linea4 = micro_acorte(lineas[5], 'y')
-
-		lineasFinal.append(lineas[0])
-		lineasFinal.append(lineas[1])
-		lineasFinal.append(linea1)
-		lineasFinal.append(linea2)
-		lineasFinal.append(linea3)
-		lineasFinal.append(linea4)
-		lineasFinal.append(lineas[6])
-
-	return lineasFinal 
+#def acortacion(lineas, tipo):
+#	lineasFinal = []
+#
+#	if (tipo == 1):
+#		linea1 = micro_acorte(lineas[2], 'x')
+#		linea2 = micro_acorte(lineas[3], 'y')
+#		linea3 = micro_acorte(lineas[4], 'x')
+#		lineasFinal.append(lineas[0])
+#		lineasFinal.append(lineas[1])
+#		lineasFinal.append(linea1)
+#		lineasFinal.append(linea2)
+#		lineasFinal.append(linea3)
+#		lineasFinal.append(lineas[5])
+#	elif (tipo == 2):
+#		linea1 = micro_acorte(lineas[2], 'y')
+#		linea3 = micro_acorte(lineas[4], 'y')
+#
+#		lineasFinal.append(lineas[0])
+#		lineasFinal.append(lineas[1])
+#		lineasFinal.append(linea1)
+#		lineasFinal.append(linea2)
+#		lineasFinal.append(linea3)
+#	linea2 = micro_acorte(lineas[3], 'y')
+#		linea3 = micro_acorte(lineas[4], 'x')
+#		linea4 = micro_acorte(lineas[5], 'y')
+#
+#		lineasFinal.append(lineas[0])
+#		lineasFinal.append(lineas[1])
+#		lineasFinal.append(linea1)
+#		lineasFinal.append(linea2)
+#		lineasFinal.append(linea3)
+#		lineasFinal.append(linea4)
+#		lineasFinal.append(lineas[6])
+#
+#	return lineasFinal 
 
 
 def g_code_converter(m):
@@ -216,19 +211,43 @@ def g_code_converter(m):
 	return allLines
 
 def send(val):
-	arduino = serial.Serial('/dev/ttyACM0', baudrate=115200)
+	
+	ports = list(serial.tools.list_ports.comports())
+	for p in ports:
+    	#print p
+		if "Arduino" in p[1]:
+			arduino = serial.Serial(p[0], baudrate=115200)
+	
+	tempN = 3
+	tempF = 5
+	#arduino = serial.Serial('COM3', baudrate=115200)
 	
 	arduino.write(bytes("\r\n\r\n", encoding='ascii'))
 	arduino.write(bytes("M4", encoding='ascii'))
 
 	for z in val:
+		
 		arduino.write(bytes("\r\n\r\n", encoding='ascii'))
 		arduino.write(bytes(str(z), encoding='ascii'))
 		arduino.write(bytes("\r\n\r\n", encoding='ascii'))
 		print(z)
-		time.sleep(5)
+		time.sleep(3)
 		#wait_for_answer()
 		time.sleep(.5)
+
+def home(tira):
+	tam = len(tira)
+	ultTira = tira[tam-1]
+	y = find_value(ultTira, 'Y')
+	#y = list(y.insert(1, '-'))
+	y = y.replace('Y', '-')
+	x = find_value(ultTira, 'X')
+	#x = list(x.insert(1, '-'))
+	x = x.replace('X', '-')
+	ultTira = 'G91 '+'X'+x+'Y'+y
+	print(ultTira)
+	return ultTira
+
 
 def funcion_maxima(cor1, cor2):
 	tipo = determinate_type(cor1, cor2)
@@ -251,19 +270,15 @@ def funcion_maxima(cor1, cor2):
 
 	#home()
 	tod_lineas = acort(glines, tipo)
+	tod_lineas = add_gMagnet(tod_lineas)
+	tod_lineas.insert(0, "G00 X0Y0")
+	h = home(glines)
+	print(h)
+	tod_lineas.append(h)
+	return tod_lineas
 	#print(tod_lineas)
 	#print(find_value(caca, 'X'))
-	print(add_gMagnet(tod_lineas))
+	#print(add_gMagnet(tod_lineas))
 
 	#time.sleep(5)
-
-def home(tira):
-	tam = len(tira)
-	cant = tam - 3
-	i = 3
-	tiraPiola = ''
-	while (i < cant+1):
-		tiraPiola = tiraPiola+tira[i]
-	print(tiraCoor)
-
 
