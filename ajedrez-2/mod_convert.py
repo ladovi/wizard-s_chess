@@ -55,9 +55,6 @@ def find_value(line, letra):
 
 
 def acort(lines, typ):
-	#for i in lines:
-	#	val = find_value(i, typ)
-	#	print(val)
 	allLines = []
 
 	if (typ == 1):
