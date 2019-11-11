@@ -16,9 +16,9 @@ tipo = f.determinate_type(tCoord1, tCoord2)
 
 todLines = f.funcion_maxima(tCoord1, tCoord2)
 
-
-print("move type:",tipo)
 print(todLines)
+#print("move type:",tipo)
+#print(todLines)
 
 
 

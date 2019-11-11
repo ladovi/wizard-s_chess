@@ -7,7 +7,7 @@ def convert_btw_lines(x, y):
         x = (x*2)+1
         y = (y*2)+1
         xy = [x, y]
-        print(xy)
+        #print(xy)
         return xy
 
 #types: type1 = movimiento en x, type2 = movmiento en y,
@@ -62,6 +62,29 @@ def make_path(crd1, crd2):
 		#se apaga iman
 		moves = [move1, move2, move3, move4, move5]
 	return moves
+
+def val_path(line, letra):
+	
+	indX = find_index_letra(line, 'X')
+	indY = find_index_letra(line, 'Y')
+	val = ''
+	if (letra == 'X'):
+		i = indX
+		while (i < indY):
+			val = val+line[i]
+			i += 1
+			
+	else:
+		i = indY
+		while (i < len(line)):
+			val = val+line[i]
+			i += 1
+	return val
+
+
+
+	
+
 
 def add_magnet(mov):
 	mov.insert(1, 1)
@@ -121,6 +144,9 @@ def find_value(line, letra):
 			val = val+line[i]
 			i += 1
 	return val
+
+
+
 
 
 def acort(lines, typ):
@@ -247,8 +273,54 @@ def home(tira):
 	#x = list(x.insert(1, '-'))
 	x = x.replace('X', '-')
 	ultTira = 'G91 '+'X'+x+'Y'+y
-	print(ultTira)
+	#print(ultTira)
 	return ultTira
+
+
+
+def resta(line1, line2, let):
+	a = find_value(line1, let)
+	b = find_value(line2, let)
+	a = a.replace(let, "")
+	b = b.replace(let, "")
+	res = int(b) - int(a)
+	#print(a, b)
+	#print(len(a), len(b))
+	print(res)
+	return res 
+
+def mkPath2(path, tipo):
+	print(len(path))
+	if (tipo == 1):
+		m1 = resta(path[1], path[3], 'Y')
+		m2 = resta(path[3], path[4], 'X')
+		m3 = resta(path[4], path[5], 'Y')
+		l1 = 'G91 Y'+str(m1)
+		l2 = 'G91 X'+str(m2)
+		l3 = 'G91 Y'+str(m3)
+		fixedPath = [path[0], path[1], path[2], l1, l2, l3, path[6]]
+	elif (tipo == 2):
+		m1 = resta(path[1], path[3], 'X')
+		m2 = resta(path[3], path[4], 'Y')
+		m3 = resta(path[4], path[5], 'X')
+		l1 = 'G91 X'+str(m1)
+		l2 = 'G91 Y'+str(m2)
+		l3 = 'G91 X'+str(m3)
+		fixedPath = [path[0], path[1], path[2], l1, l2, l3, path[6]]
+	else:
+		m1 = resta(path[1], path[3], 'Y')
+		m2 = resta(path[3], path[4], 'X')
+		m3 = resta(path[4], path[5], 'Y')
+		m4 = resta(path[5], path[6], 'X')
+		l1 = 'G91 Y'+str(m1)
+		l2 = 'G91 X'+str(m2)
+		l3 = 'G91 Y'+str(m3)
+		l4 = 'G91 X'+str(m4)
+		fixedPath = [path[0], path[1], path[2], l1, l2, l3, l4, path[7]]
+	return fixedPath
+
+#def goodPath(gcode, t):
+#	if (t == 1):
 
 
 def funcion_maxima(cor1, cor2):
@@ -263,7 +335,7 @@ def funcion_maxima(cor1, cor2):
 	#print(gline)
 	#print(gline2)
 	glines = g_code_converter(moves)
-
+	print(glines)
 	#lineasCortadas = acortacion(glines, tipo)
 	#print(lineasCortadas)
 
@@ -271,14 +343,27 @@ def funcion_maxima(cor1, cor2):
 	#send(lineasCortadas)
 
 	#home()
-	tod_lineas = acort(glines, tipo)
+	tod_lineas = glines
+	#tod_lineas = acort(glines, tipo)
 	tod_lineas = add_gMagnet(tod_lineas)
 	tod_lineas.insert(0, "G00 X0Y0")
 	h = home(glines)
+
 	print(h)
 	tod_lineas.append(h)
-	send(tod_lineas)
+	print(tod_lineas)
+	#add_gMagnet(gl)
+	#print(gl)
+	#print(glines)
+	#glines.insert(0, 'G91 X0Y0')
+	#print(glines)
+	#glines = glines.append(home(gl))
+	tod_lineas = mkPath2(tod_lineas, tipo)
+	#print(glines)
 	return tod_lineas
+	#fLineas = mkPath2(tod_lineas, tipo)
+	#send(tod_lineas)
+	#return fLineas
 	#print(tod_lineas)
 	#print(find_value(caca, 'X'))
 	#print(add_gMagnet(tod_lineas))
