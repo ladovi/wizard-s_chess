@@ -285,14 +285,14 @@ def resta(line1, line2, let):
 	a = a.replace(let, '')
 	b = b.replace(let, '')
 	print("despues del replace:", a, b)
-	#res = int(b) - int(a)
+	res = int(b) - int(a)
 	#print(a, b)
 	#print(len(a), len(b))
 	#print(res)
-	#return res 
+	return res 
 
 def mkPath2(path, tipo):
-	print(len(path))
+	#print(len(path))
 	if (tipo == 1):
 		m1 = resta(path[1], path[3], 'Y')
 		m2 = resta(path[3], path[4], 'X')
@@ -321,8 +321,21 @@ def mkPath2(path, tipo):
 		fixedPath = [path[0], path[1], path[2], l1, l2, l3, l4, path[7]]
 	return fixedPath
 
-#def goodPath(gcode, t):
-#	if (t == 1):
+def goodPath(path, tipo):
+	if (tipo == 1):
+		m1 = resta(path[1], path[3], 'X')
+		l1 = 'G91 X'+str(m1)
+		fixedPath = [path[0], path[1], path[2], l1, path[4], path[5]]
+	elif (tipo == 2):
+		m1 = resta(path[1], path[3], 'Y')
+		l1 = 'G91 Y'+str(m1)
+		fixedPath = [path[0], path[1], path[2], l1, path[4], path[5]]
+	else:
+		m1x = resta(path[1], path[3], 'X')
+		m1y = resta(path[1], path[3], 'Y')
+		l1 = 'G91 X'+str(m1x)+'Y'+str(m1y)
+		fixedPath = [path[0], path[1], path[2], l1, path[4], path[5]]
+	return fixedPath
 
 
 def funcion_maxima(cor1, cor2):
@@ -346,6 +359,7 @@ def funcion_maxima(cor1, cor2):
 		tod_lineas.append(h)
 		print("tira de lineas:", tod_lineas)
 		tod_lineas = mkPath2(tod_lineas, tipo)
+		tod_lineas.append(h)
 	else:
 		lss = []
 		lss.append(cor1)
@@ -366,6 +380,7 @@ def funcion_maxima(cor1, cor2):
 		
 		tod_lineas.append(h)
 		print("tod_lineas:", tod_lineas)
+		tod_lineas = goodPath(tod_lineas, tipo)
 		#tod_lineas = mkPath2(tod_lineas, tipo)
 		#tod_lineas = acort(glines, tipo)
 
