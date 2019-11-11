@@ -1,4 +1,4 @@
-import functs as f
+import functs_alt as f
 
 #inp = input("enter coordenate between comas")
 #coord = [int(inp[0]), int(inp[2])]

@@ -281,13 +281,15 @@ def home(tira):
 def resta(line1, line2, let):
 	a = find_value(line1, let)
 	b = find_value(line2, let)
-	a = a.replace(let, "")
-	b = b.replace(let, "")
-	res = int(b) - int(a)
+	print("despues del find_value:", a, b)
+	a = a.replace(let, '')
+	b = b.replace(let, '')
+	print("despues del replace:", a, b)
+	#res = int(b) - int(a)
 	#print(a, b)
 	#print(len(a), len(b))
-	print(res)
-	return res 
+	#print(res)
+	#return res 
 
 def mkPath2(path, tipo):
 	print(len(path))
@@ -325,8 +327,53 @@ def mkPath2(path, tipo):
 
 def funcion_maxima(cor1, cor2):
 	tipo = determinate_type(cor1, cor2)
+	x1 = int(cor1[0])
+	x2 = int(cor2[0])
+	y1 = int(cor1[1])		
+	y2 = int(cor2[1])
+	if (tipo == 3 and x2-x1 != y2-y1):		
+		moves = make_path(cor1, cor2)	
+		glines = g_code_converter(moves)
+		print(glines)
+		tod_lineas = glines
+		h = home(glines)
+		#tod_lineas = acort(glines, tipo)
+		tod_lineas = add_gMagnet(tod_lineas)
+		tod_lineas.insert(0, "G00 X0Y0")
+		
+
+		print("home: "+h)
+		tod_lineas.append(h)
+		print("tira de lineas:", tod_lineas)
+		tod_lineas = mkPath2(tod_lineas, tipo)
+	else:
+		lss = []
+		lss.append(cor1)
+		lss.append(cor2)
+		glines = g_code_converter(lss)
+		h = home(glines)
+		print(glines)
+		if (tipo == 1):
+			v = find_value(glines[1], 'Y')
+			lineaCambiada = glines[1].replace(v, "")
+			glines[1] = lineaCambiada
+		elif (tipo == 2):
+			v = find_value(glines[1], 'X')
+			lineaCambiada = glines[1].replace(v, "")
+			glines[1] = lineaCambiada
+		tod_lineas = add_gMagnet(glines)
+		tod_lineas.insert(0, 'G00 X0Y0')
+		
+		tod_lineas.append(h)
+		print("tod_lineas:", tod_lineas)
+		#tod_lineas = mkPath2(tod_lineas, tipo)
+		#tod_lineas = acort(glines, tipo)
+
+	return tod_lineas
+
+	'''
 	#print("move type:",tipo)
-	moves = make_path(cor1, cor2)
+	#moves = make_path(cor1, cor2)
 	#print(moves)
 	#magMoves = add_magnet(moves)
 	#print(magMoves)
@@ -334,7 +381,7 @@ def funcion_maxima(cor1, cor2):
 	#gline2 = micro_g_code(magMoves[1], 1)
 	#print(gline)
 	#print(gline2)
-	glines = g_code_converter(moves)
+	#glines = g_code_converter(moves)
 	print(glines)
 	#lineasCortadas = acortacion(glines, tipo)
 	#print(lineasCortadas)
@@ -369,4 +416,5 @@ def funcion_maxima(cor1, cor2):
 	#print(add_gMagnet(tod_lineas))
 
 	#time.sleep(5)
+	'''
 
